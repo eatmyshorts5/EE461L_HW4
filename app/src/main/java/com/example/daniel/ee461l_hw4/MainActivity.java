@@ -1,5 +1,7 @@
 package com.example.daniel.ee461l_hw4;
 
+import android.content.Intent;
+import android.icu.text.IDNA;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,12 +31,19 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText addressField;
 
+    private double lat;
+    private double lng;
+
+    public Intent sendShit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         addressField = findViewById(R.id.address);
+
+        sendShit = new Intent(MainActivity.this, activity_map.class);
 
         Button convertButton = findViewById(R.id.convert_button);
         convertButton.setOnClickListener(new View.OnClickListener() {
@@ -115,13 +124,22 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, second.toString());
                     JSONObject third = second.getJSONObject("geometry");
                     Log.d(TAG, third.toString());
-                    JSONObject fourth = third.getJSONObject("location");
-                    Log.d(TAG, fourth.toString());
-                    Log.d(TAG, "Latitude: " + fourth.getString("lat"));
-                    Log.d(TAG, "Latitude: " + fourth.getString("lng"));
+                    JSONObject jsonObject = third.getJSONObject("location");
+                    Log.d(TAG, jsonObject.toString());
+                    Log.d(TAG, "Latitude: " + jsonObject.getString("lat"));
+                    Log.d(TAG, "Latitude: " + jsonObject.getString("lng"));
+                    lat = Double.parseDouble(jsonObject.getString("lat"));
+                    Log.d(TAG, Double.toString(lat));
+                    lng = Double.parseDouble(jsonObject.getString("lng"));
+                    sendShit.putExtra("Latitude", lat);
+                    Log.d(TAG, "This is lat: " + Double.toString(lat));
+                    sendShit.putExtra("Longitude", lng);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                startActivity(sendShit);
+
             }
         });
     }
