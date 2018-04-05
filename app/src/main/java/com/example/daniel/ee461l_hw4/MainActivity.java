@@ -20,8 +20,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+import android.content.Intent;
+import android.content.Context;
 
+public class MainActivity extends AppCompatActivity {
+    Context hi = this;
     public static final String TAG = "RegClient";
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
@@ -124,5 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        Intent intent = new Intent(hi, activity_map.class);
+        startActivity(intent);
+
     }
 }

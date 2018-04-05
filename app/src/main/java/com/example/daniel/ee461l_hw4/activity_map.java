@@ -10,12 +10,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.content.Intent;
 
 public class activity_map extends AppCompatActivity implements OnMapReadyCallback {
+
+    public double latitude;
+    public double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        //latitude = intent.getDoubleExtra()
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_map);
         // Get the SupportMapFragment and request notification
