@@ -115,32 +115,6 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.addPolyline(new PolylineOptions().addAll(decodedPath));
     }
 
-    private DirectionsResult setResult() extends AsyncTask{
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                DateTime now = new DateTime();
-                DirectionsResult result;
-
-                try {
-                    result = DirectionsApi.newRequest(getGeoContext())
-                            .mode(TravelMode.DRIVING).origin(start)
-                            .destination(end).departureTime(now)
-                            .await();
-
-                    return result;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ApiException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        });
-    }
 
     private GeoApiContext getGeoContext() {
         GeoApiContext geoApiContext = new GeoApiContext();
