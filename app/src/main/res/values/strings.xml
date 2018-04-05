@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">EE461L_HW4</string>
     <string name="title_activity_map">activity_map.xml</string>
+    <string name="directions_api_key">AIzaSyAXEJ2j4aXKIA8_CMBKcHMO7Ml6A_ShUdQ</string>
 </resources>

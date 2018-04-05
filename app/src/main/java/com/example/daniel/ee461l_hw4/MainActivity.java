@@ -1,5 +1,7 @@
 package com.example.daniel.ee461l_hw4;
 
+import android.content.Intent;
+import android.icu.text.IDNA;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,9 +30,17 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "RegClient";
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    public static final String DIR_BASE_URL = "https://maps.googleapis.com/maps/api/directions/json?origin=";
     public static final String API_KEY = "&key=AIzaSyBZZWrbLTwf5hApkWsjvfBeche0Gp0bOPQ";
+    public static final String DIR_API_KEY = "&key=AIzaSyAXEJ2j4aXKIA8_CMBKcHMO7Ml6A_ShUdQ";
 
     private EditText addressField;
+    private EditText destinationField;
+
+    private double lat;
+    private double lng;
+
+    public Intent sendShit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +48,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addressField = findViewById(R.id.address);
+        destinationField = findViewById(R.id.address1);
+
+        sendShit = new Intent(MainActivity.this, activity_map.class);
 
         Button convertButton = findViewById(R.id.convert_button);
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                convert();
+                directions();
             }
         });
 
@@ -118,17 +131,39 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, second.toString());
                     JSONObject third = second.getJSONObject("geometry");
                     Log.d(TAG, third.toString());
-                    JSONObject fourth = third.getJSONObject("location");
-                    Log.d(TAG, fourth.toString());
-                    Log.d(TAG, "Latitude: " + fourth.getString("lat"));
-                    Log.d(TAG, "Latitude: " + fourth.getString("lng"));
+                    JSONObject jsonObject = third.getJSONObject("location");
+                    Log.d(TAG, jsonObject.toString());
+                    Log.d(TAG, "Latitude: " + jsonObject.getString("lat"));
+                    Log.d(TAG, "Latitude: " + jsonObject.getString("lng"));
+                    lat = Double.parseDouble(jsonObject.getString("lat"));
+                    Log.d(TAG, Double.toString(lat));
+                    lng = Double.parseDouble(jsonObject.getString("lng"));
+                    sendShit.putExtra("Latitude", lat);
+                    Log.d(TAG, "This is lat: " + Double.toString(lat));
+                    sendShit.putExtra("Longitude", lng);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                sendShit.putExtra("Behavior", "Single");
+
+                startActivity(sendShit);
+
             }
         });
         Intent intent = new Intent(hi, activity_map.class);
         startActivity(intent);
 
+    }
+
+    private void directions(){
+        String address = addressField.getText().toString();
+        String destination = destinationField.getText().toString();
+
+        sendShit.putExtra("Behavior", "Directions");
+        sendShit.putExtra("Current", address);
+        sendShit.putExtra("Destination", destination);
+
+        startActivity(sendShit);
     }
 }
