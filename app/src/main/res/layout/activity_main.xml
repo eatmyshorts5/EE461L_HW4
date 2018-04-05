@@ -33,6 +33,16 @@
                 android:maxLines="1"
                 android:singleLine="true"/>
 
+            <EditText
+                android:id="@+id/address1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Destination"
+                android:inputType="textPostalAddress"
+                android:layout_marginBottom="15dp"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
             <Button
                 android:id="@+id/convert_button"
                 style="?android:textAppearanceSmall"

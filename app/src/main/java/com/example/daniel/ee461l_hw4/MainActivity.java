@@ -27,9 +27,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "RegClient";
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    public static final String DIR_BASE_URL = "https://maps.googleapis.com/maps/api/directions/json?origin=";
     public static final String API_KEY = "&key=AIzaSyBZZWrbLTwf5hApkWsjvfBeche0Gp0bOPQ";
+    public static final String DIR_API_KEY = "&key=AIzaSyAXEJ2j4aXKIA8_CMBKcHMO7Ml6A_ShUdQ";
 
     private EditText addressField;
+    private EditText destinationField;
 
     private double lat;
     private double lng;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addressField = findViewById(R.id.address);
+        destinationField = findViewById(R.id.address1);
 
         sendShit = new Intent(MainActivity.this, activity_map.class);
 
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                convert();
+                directions();
             }
         });
 
@@ -138,9 +142,22 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                sendShit.putExtra("Behavior", "Single");
+
                 startActivity(sendShit);
 
             }
         });
+    }
+
+    private void directions(){
+        String address = addressField.getText().toString();
+        String destination = destinationField.getText().toString();
+
+        sendShit.putExtra("Behavior", "Directions");
+        sendShit.putExtra("Current", address);
+        sendShit.putExtra("Destination", destination);
+
+        startActivity(sendShit);
     }
 }
