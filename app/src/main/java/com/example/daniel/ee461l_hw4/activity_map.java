@@ -130,6 +130,7 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.addPolyline(new PolylineOptions().addAll(decodedPath));
     }
 
+
 //    private DirectionsResult setResult(void) extends AsyncTask{
 //        AsyncTask.execute(new Runnable() {
 //            @Override
@@ -156,6 +157,7 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
 //
 //        });
 //    }
+
 
     private GeoApiContext getGeoContext() {
         GeoApiContext geoApiContext = new GeoApiContext();
