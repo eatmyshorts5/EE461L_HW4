@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EE461L_HW4</string>
+    <string name="title_activity_map">activity_map.xml</string>
 </resources>
