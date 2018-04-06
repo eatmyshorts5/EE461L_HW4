@@ -43,10 +43,6 @@ public class MyAsyncTask extends AsyncTask<String, Void, DirectionsResult> {
         return result;
     }
 
-    protected void onPostExecute(DirectionsResult result) {
-        
-    }
-
     private GeoApiContext getGeoContext(String apiKey) {
         GeoApiContext geoApiContext = new GeoApiContext();
         return geoApiContext.setQueryRateLimit(3)

@@ -9,7 +9,7 @@
     android:paddingLeft="16px"
     android:paddingRight="16px"
     android:paddingTop="16px"
-    tools:context="com.example.daniel.ee461l_hw4.MainActivity">
+    tools:context="com.example.daniel.ee461l_hw4.ActuallyMainActivity">
 
     <ScrollView
         android:id="@+id/address_form"
@@ -23,28 +23,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/address"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Address"
-                android:inputType="textPostalAddress"
-                android:layout_marginBottom="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
-
-            <EditText
-                android:id="@+id/address1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Destination"
-                android:inputType="textPostalAddress"
-                android:layout_marginBottom="15dp"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:textSize="10pt"
+                android:text="Choose either to make a mark on the map or get directions"/>
 
             <Button
                 android:id="@+id/convert_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Mark Map"
+                android:textStyle="bold"/>
+
+
+            <Button
+                android:id="@+id/direction_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

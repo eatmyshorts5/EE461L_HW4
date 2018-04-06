@@ -1,9 +1,12 @@
 package com.example.daniel.ee461l_hw4;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.maps.android.PolyUtil;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -23,6 +26,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -37,6 +41,8 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
     public String start;
     public String end;
     public DirectionsResult results;
+
+    private Intent sendIT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,16 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
             lng = getIntent().getDoubleExtra("Longitude", 0);
             Log.d(TAG, "Oh yeah " +Double.toString(lng));
         }
+
+        Button homeButton = findViewById(R.id.home_button);
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendIT = new Intent(activity_map.this, ActuallyMainActivity.class);
+                startActivity(sendIT);
+            }
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -81,28 +97,18 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getDirections(final GoogleMap googleMap) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                DateTime now = new DateTime();
+        DirectionsResult results = null;
+        MyAsyncTask yeah = new MyAsyncTask();
 
-                try {
-                    results = DirectionsApi.newRequest(getGeoContext())
-                            .mode(TravelMode.DRIVING).origin(start)
-                            .destination(end).departureTime(now)
-                            .await();
+        yeah.execute(start, end, getString(R.string.directions_api_key));
 
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ApiException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
+        try{
+            results = yeah.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e ) {
+            e.printStackTrace();
+        }
 
         googleMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0]
                 .startLocation.lat, results.routes[0].legs[0].startLocation.lng))
@@ -113,6 +119,7 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
 
         List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
         googleMap.addPolyline(new PolylineOptions().addAll(decodedPath));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(decodedPath.get(decodedPath.size()/2)));
     }
 
 
