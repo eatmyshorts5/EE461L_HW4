@@ -46,6 +46,7 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
     public double lng;
     public String start;
     public String end;
+    public String address;
     public DirectionsResult results;
 
     private Intent sendIT;
@@ -68,6 +69,7 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG, "Nice " + Double.toString(lat));
             lng = getIntent().getDoubleExtra("Longitude", 0);
             Log.d(TAG, "Oh yeah " +Double.toString(lng));
+            address = getIntent().getStringExtra("Formatted_Address");
         }
 
         Button homeButton = findViewById(R.id.home_button);
@@ -106,8 +108,9 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
     private void markMap(GoogleMap googleMap) {
         LatLng sydney = new LatLng(lat, lng);
         googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
+                .title(address));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        googleMap.animateCamera( CameraUpdateFactory.zoomTo( 15.0f ) );
     }
 
     private void getDirections(final GoogleMap googleMap) {
@@ -124,6 +127,15 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
             e.printStackTrace();
         }
 
+        String i = results.routes[0].legs[0].distance.humanReadable;
+        Log.d(TAG, "DISTANCE: " + i);
+
+        int check = i.indexOf(' ');
+        i = i.substring(0, check);
+        check = Integer.parseInt(i);
+
+        double scale = 17.0 - check / 30;
+
         googleMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0]
                 .startLocation.lat, results.routes[0].legs[0].startLocation.lng))
                 .title(results.routes[0].legs[0].startAddress));
@@ -134,15 +146,7 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
         List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
         googleMap.addPolyline(new PolylineOptions().addAll(decodedPath));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(decodedPath.get(decodedPath.size()/2)));
-    }
-
-    private GeoApiContext getGeoContext() {
-        GeoApiContext geoApiContext = new GeoApiContext();
-        return geoApiContext.setQueryRateLimit(3)
-                .setApiKey(getString(R.string.directions_api_key))
-                .setConnectTimeout(10, TimeUnit.SECONDS)
-                .setReadTimeout(10, TimeUnit.SECONDS)
-                .setWriteTimeout(10, TimeUnit.SECONDS);
+        //googleMap.animateCamera( CameraUpdateFactory.zoomTo( scale ) );
     }
 
     private String getEndLocationTitle(DirectionsResult results){

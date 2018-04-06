@@ -32,6 +32,7 @@ public class MarkActivity extends AppCompatActivity {
 
     private double lat;
     private double lng;
+    private String formattedAddress;
 
     public Intent sendShit;
 
@@ -119,12 +120,14 @@ public class MarkActivity extends AppCompatActivity {
                 try {
                     JSONArray first = jsonRequest.getJSONArray("results");
                     JSONObject second = first.getJSONObject(0);
+                    formattedAddress = second.getString("formatted_address");
                     JSONObject third = second.getJSONObject("geometry");
                     JSONObject jsonObject = third.getJSONObject("location");
                     lat = Double.parseDouble(jsonObject.getString("lat"));
                     lng = Double.parseDouble(jsonObject.getString("lng"));
                     sendShit.putExtra("Latitude", lat);
                     sendShit.putExtra("Longitude", lng);
+                    sendShit.putExtra("Formatted_Address", formattedAddress);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
