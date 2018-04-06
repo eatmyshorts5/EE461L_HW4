@@ -8,7 +8,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import android.content.Intent;
+import android.content.Context;
+
 public class MainActivity extends AppCompatActivity {
+    Context hi = this;
+    public static final String TAG = "RegClient";
+
+    public static final String BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    public static final String DIR_BASE_URL = "https://maps.googleapis.com/maps/api/directions/json?origin=";
+    public static final String API_KEY = "&key=AIzaSyBZZWrbLTwf5hApkWsjvfBeche0Gp0bOPQ";
+    public static final String DIR_API_KEY = "&key=AIzaSyAXEJ2j4aXKIA8_CMBKcHMO7Ml6A_ShUdQ";
 
     private EditText addressField;
     private EditText destinationField;

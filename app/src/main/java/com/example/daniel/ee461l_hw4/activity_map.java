@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.maps.android.PolyUtil;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.GeoApiContext;
@@ -29,8 +30,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import android.content.Intent;
 
 public class activity_map extends AppCompatActivity implements OnMapReadyCallback {
+
+
+    public double latitude;
+    public double longitude;
 
     private int flag = 0;
 
@@ -47,6 +53,8 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        //latitude = intent.getDoubleExtra()
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_map);
         // Get the SupportMapFragment and request notification
@@ -87,6 +95,12 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             markMap(googleMap);
         }
+        GoogleMapOptions options = new GoogleMapOptions();
+        options.mapType(GoogleMap.MAP_TYPE_SATELLITE)
+                .compassEnabled(true)
+                .rotateGesturesEnabled(true)
+                .tiltGesturesEnabled(true)
+                .zoomControlsEnabled(true);
     }
 
     private void markMap(GoogleMap googleMap) {
@@ -121,7 +135,6 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.addPolyline(new PolylineOptions().addAll(decodedPath));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(decodedPath.get(decodedPath.size()/2)));
     }
-
 
     private GeoApiContext getGeoContext() {
         GeoApiContext geoApiContext = new GeoApiContext();

@@ -14,7 +14,7 @@
         android:layout_weight="100"
         android:layout_margin="30px"
         tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
-
+    
     <Button
         android:id="@+id/home_button"
         style="?android:textAppearanceSmall"
