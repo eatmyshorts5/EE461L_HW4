@@ -15,7 +15,7 @@
         android:id="@+id/address_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30px">
+        android:layout_marginTop="10px">
 
         <LinearLayout
             android:id="@+id/the_address_form"
@@ -26,37 +26,36 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="12pt"
+                android:text="How to play the game"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15px"
                 android:textSize="8pt"
-                android:text="Choose either to make a mark on the map or get directions. Or play a game!"/>
+                android:text="This game is simple. Just find the place!\n1. Enter in your guess of the location\n2. You will be given hints. The more you guess the more hints you will get!\n3. You have a heat meter. The closer you get the HOTTER you get!"/>
 
             <Button
-                android:id="@+id/convert_button"
+                android:id="@+id/play_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Mark Map"
+                android:text="Lets play!"
                 android:textStyle="bold"/>
 
 
             <Button
-                android:id="@+id/direction_button"
+                android:id="@+id/home_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Get Directions"
+                android:text="Go Home"
                 android:textStyle="bold"/>
 
-            <Button
-                android:id="@+id/game_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Play Find the Place!"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
+            </LinearLayout>
     </ScrollView>
 </LinearLayout>

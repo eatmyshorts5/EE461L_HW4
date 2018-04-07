@@ -43,6 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".InstructionActivity" />
+        <activity android:name=".GameActivity" />
+        <activity android:name=".VictoryActivity"></activity>
         <activity android:name=".Street_View"></activity>
     </application>
 
