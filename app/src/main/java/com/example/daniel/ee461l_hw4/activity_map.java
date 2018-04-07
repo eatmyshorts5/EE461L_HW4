@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.maps.android.PolyUtil;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.GeoApiContext;
@@ -132,9 +134,10 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
 
         int check = i.indexOf(' ');
         i = i.substring(0, check);
+        i = i.replace(",", "");
         check = Integer.parseInt(i);
 
-        double scale = 17.0 - check / 30;
+        check = check * 1609;
 
         googleMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0]
                 .startLocation.lat, results.routes[0].legs[0].startLocation.lng))
@@ -146,7 +149,21 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
         List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
         googleMap.addPolyline(new PolylineOptions().addAll(decodedPath));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(decodedPath.get(decodedPath.size()/2)));
-        //googleMap.animateCamera( CameraUpdateFactory.zoomTo( scale ) );
+
+        Circle circle = googleMap.addCircle(new CircleOptions().center(decodedPath.get(decodedPath.size()/2)).radius(check/2));
+        circle.setVisible(false);
+
+        googleMap.animateCamera( CameraUpdateFactory.zoomTo( getZoomLevel(circle) ) );
+    }
+
+    public int getZoomLevel(Circle circle) {
+        int zoomLevel = 17;
+        if (circle != null){
+            double radius = circle.getRadius();
+            double scale = radius / 500;
+            zoomLevel =(int) (16 - Math.log(scale) / Math.log(2));
+        }
+        return zoomLevel;
     }
 
     private String getEndLocationTitle(DirectionsResult results){

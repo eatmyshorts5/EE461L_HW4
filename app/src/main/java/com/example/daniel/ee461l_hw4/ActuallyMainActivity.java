@@ -17,6 +17,7 @@ public class ActuallyMainActivity extends AppCompatActivity {
 
         Button convertButton = findViewById(R.id.convert_button);
         Button directionButton = findViewById(R.id.direction_button);
+        Button playButton = findViewById(R.id.game_button);
 
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +31,14 @@ public class ActuallyMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sendIT = new Intent(ActuallyMainActivity.this, MainActivity.class);
+                startActivity(sendIT);
+            }
+        });
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendIT = new Intent(ActuallyMainActivity.this, InstructionActivity.class);
                 startActivity(sendIT);
             }
         });
