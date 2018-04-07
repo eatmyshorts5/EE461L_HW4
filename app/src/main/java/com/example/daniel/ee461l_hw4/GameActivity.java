@@ -41,6 +41,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
     public static final String API_KEY = "&key=AIzaSyBZZWrbLTwf5hApkWsjvfBeche0Gp0bOPQ";
+    public static final int NUM_LOC = 3;
 
     private int hintIndex = 0;
     private int locationIndex = 0;
@@ -59,7 +60,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String locations[] = new String[]{"Yankees Stadium", "UT Austin", "Sydney Opera House"};
 
     private String hints[][] = new String[][]{
-            {"The city is sometimes referenced as a large fruit", "They play sports here", "The players wear pinstripes"}
+            {"The city is sometimes referenced as a large fruit", "They play sports here", "The players wear pinstripes"},
+            {"This is an institution of learning", "It's real hot", "They like orange down there"},
+            {"It's down under", "They play music here", "Iconic Architecture Mate"}
     };
 
     @Override
@@ -68,7 +71,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_game);
 
         Random lol = new Random();
-        int rand = lol.nextInt(3);
+        int rand = lol.nextInt(NUM_LOC);
+
+        locationIndex = rand;
 
         guessField = findViewById(R.id.guess_input);
         hintField = findViewById(R.id.hint_text);
@@ -165,22 +170,19 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             theMap.animateCamera( CameraUpdateFactory.zoomTo( 8.5f ) );
             heatField.setText("Heat Status: Warm");
         } else if(comparator >= 0.3 && comparator < 0.5){
-            theMap.animateCamera( CameraUpdateFactory.zoomTo( 9.5f ) );
+            theMap.animateCamera( CameraUpdateFactory.zoomTo( 9f ) );
             heatField.setText("Heat Status: Toasty");
         } else if(comparator >= 0.1 && comparator < 0.3){
-            theMap.animateCamera( CameraUpdateFactory.zoomTo( 10f ) );
+            theMap.animateCamera( CameraUpdateFactory.zoomTo( 9.5f ) );
             heatField.setText("Heat Status: HOT");
-        } else if(comparator >= 0.1 && comparator < 0.3){
-            theMap.animateCamera( CameraUpdateFactory.zoomTo( 10.5f ) );
-            heatField.setText("Heat Status: SUPA HOT");
         } else if(comparator >= 0.03 && comparator < 0.1){
             theMap.animateCamera( CameraUpdateFactory.zoomTo( 11f ) );
             heatField.setText("Heat Status: OH SO HOT IT'S ON FIRE");
         } else if(comparator >= 0.001 && comparator < 0.03){
-            theMap.animateCamera( CameraUpdateFactory.zoomTo( 16f ) );
+            theMap.animateCamera( CameraUpdateFactory.zoomTo( 15f ) );
             heatField.setText("Heat Status: OMG YOU'RE SO HOT OHHH YEAHHHHHHHH");
         } else {
-            sendIT = new Intent(GameActivity.this, ActuallyMainActivity.class);
+            sendIT = new Intent(GameActivity.this, VictoryActivity.class);
             startActivity(sendIT);
         }
     }

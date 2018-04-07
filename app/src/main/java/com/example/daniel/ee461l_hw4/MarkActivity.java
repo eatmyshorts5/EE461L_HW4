@@ -73,20 +73,24 @@ public class MarkActivity extends AppCompatActivity {
 
                 int indexOfLastSpace = address.lastIndexOf(" ");
 
-                nextIndex = address.indexOf(" ", currentIndex);
-                hold = address.substring(currentIndex, nextIndex);
-                full_URL = full_URL + hold;
-                currentIndex = nextIndex;
-
-                while (currentIndex != indexOfLastSpace) {
-                    nextIndex = address.indexOf(" ", currentIndex + 1);
-                    hold = address.substring(currentIndex + 1, nextIndex);
-                    full_URL = full_URL + "+" + hold;
+                if(indexOfLastSpace == -1){
+                    full_URL = full_URL + address;
+                } else {
+                    nextIndex = address.indexOf(" ", currentIndex);
+                    hold = address.substring(currentIndex, nextIndex);
+                    full_URL = full_URL + hold;
                     currentIndex = nextIndex;
-                }
 
-                hold = address.substring(currentIndex + 1, address.length());
-                full_URL = full_URL + "+" + hold;
+                    while (currentIndex != indexOfLastSpace) {
+                        nextIndex = address.indexOf(" ", currentIndex + 1);
+                        hold = address.substring(currentIndex + 1, nextIndex);
+                        full_URL = full_URL + "+" + hold;
+                        currentIndex = nextIndex;
+                    }
+
+                    hold = address.substring(currentIndex + 1, address.length());
+                    full_URL = full_URL + "+" + hold;
+                }
 
                 full_URL = full_URL + API_KEY;
 
