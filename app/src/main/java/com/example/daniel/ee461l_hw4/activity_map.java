@@ -1,6 +1,8 @@
 package com.example.daniel.ee461l_hw4;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.widget.Button;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.PolyUtil;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.GeoApiContext;
@@ -34,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.content.Intent;
 
-public class activity_map extends AppCompatActivity implements OnMapReadyCallback {
+public class activity_map extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
     public double latitude;
@@ -52,6 +56,19 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
     public DirectionsResult results;
 
     private Intent sendIT;
+    private Intent forstreet;
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();  // Always call the superclass method first
+//
+//        // Release the Camera because we don't need it when paused
+//        // and other activities might need to use it.
+//        if (mCamera != null) {
+//            mCamera.release();
+//            mCamera = null;
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +110,7 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // Add a marker in Sydney, Australia,
-        // and move the map's camera to the same location.
+        // and move the map's camera to the same location
         if(flag == 1){
             getDirections(googleMap);
         } else {
@@ -109,16 +126,47 @@ public class activity_map extends AppCompatActivity implements OnMapReadyCallbac
 
     private void markMap(GoogleMap googleMap) {
         LatLng sydney = new LatLng(lat, lng);
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title(address));
+        latitude = sydney.latitude;
+        longitude = sydney.longitude;
+        //Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_name);
+        //;notBuilder.setLargeIcon(largeIcon);
+        Marker themarker = googleMap.addMarker(new MarkerOptions().position(sydney)
+                .title(address).draggable(true));
+        googleMap.setOnMarkerClickListener(this);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         googleMap.animateCamera( CameraUpdateFactory.zoomTo( 15.0f ) );
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        forstreet = new Intent(activity_map.this, Street_View.class);
+        if(flag == 0) {
+            forstreet.putExtra("latitude", marker.getPosition().latitude);
+            forstreet.putExtra("longitude", marker.getPosition().longitude);
+            forstreet.putExtra("Formatted_Address", address);
+            forstreet.putExtra("Behavior", "Single");
+            startActivity(forstreet);
+        }
+        else if(flag == 1){
+            forstreet.putExtra("latitude", marker.getPosition().latitude);
+            forstreet.putExtra("longitude", marker.getPosition().longitude);
+            forstreet.putExtra("start", start);
+            forstreet.putExtra("end", end);
+            forstreet.putExtra("Behavior", "Directions");
+            startActivity(forstreet);
+        }
+
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false;
     }
 
     private void getDirections(final GoogleMap googleMap) {
         DirectionsResult results = null;
         MyAsyncTask yeah = new MyAsyncTask();
-
+        googleMap.setOnMarkerClickListener(this);
         yeah.execute(start, end, getString(R.string.directions_api_key));
 
         try{
